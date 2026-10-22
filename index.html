@@ -1,0 +1,300 @@
+<!doctype html><meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; img-src data: blob:; font-src data:; media-src data: blob:; base-uri 'none'; form-action 'none'">
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Watch Match</title>
+<style>
+:root{--bg:#eaf7ff;--pri:#2aa7e0;--deep:#0b6fa4;--ink:#234255;--mute:#5d7a8a;--line:#cfeaf8;--pink:#ff5b94;--pinkbg:#fff0f5;--cy:#ecfeff}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,"Hiragino Sans","Noto Sans JP",sans-serif;line-height:1.5;-webkit-text-size-adjust:100%}
+button,input,textarea{font:inherit;color:inherit}
+:focus-visible{outline:3px solid #0e8aa0;outline-offset:2px}
+header{background:#fff;border-bottom:2px solid var(--line);position:sticky;top:0;z-index:5}
+.hd{max-width:760px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.logo{font-size:28px}
+.brand{flex:1;min-width:0}
+.brand b{display:block;font-size:20px;color:#0e8aa0;line-height:1.1}
+.brand span{font-size:12px;color:var(--mute)}
+.lang{display:flex;border:2px solid var(--pri);border-radius:20px;overflow:hidden}
+.lang button{border:0;background:#fff;color:var(--deep);padding:5px 12px;font-size:13px;font-weight:700;cursor:pointer}
+.lang button[aria-pressed=true]{background:var(--pri);color:#fff}
+main{max-width:760px;margin:0 auto;padding:16px 16px 60px}
+.tabs{display:flex;gap:8px;margin-bottom:16px}
+.tab{flex:1;border:2px solid var(--line);background:#fff;border-radius:14px;padding:10px 6px;font-weight:700;color:var(--mute);cursor:pointer}
+.tab[aria-selected=true]{background:var(--pri);border-color:var(--pri);color:#fff}
+h2{color:var(--deep);font-size:19px;margin:0 0 6px}
+.lead{margin:0 0 14px;font-size:13.5px;color:var(--mute)}
+.card{background:#fff;border:2px solid var(--line);border-radius:16px;padding:14px;margin-bottom:14px}
+label{font-size:13px;font-weight:700;color:var(--deep);display:block;margin-bottom:4px}
+input[type=text],input[type=search],textarea{width:100%;border:2px solid var(--line);border-radius:12px;padding:10px 12px;background:#fff}
+textarea{resize:vertical;min-height:130px;border:2px dashed #7cc8ee;font-size:13px;font-family:ui-monospace,Menlo,monospace;line-height:1.6;word-break:break-all}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.chips{display:flex;gap:6px;margin:10px 0}
+.chip{border:2px solid var(--line);background:#fff;border-radius:20px;padding:4px 12px;font-size:13px;cursor:pointer;color:var(--mute);font-weight:600}
+.chip[aria-pressed=true]{background:var(--deep);border-color:var(--deep);color:#fff}
+.grid{display:grid;grid-template-columns:1fr;gap:8px}
+@media(min-width:560px){.grid{grid-template-columns:1fr 1fr}}
+.work{display:flex;align-items:center;gap:10px;text-align:left;background:#fff;border:2px solid var(--line);border-radius:14px;padding:11px 12px;cursor:pointer;transition:transform .1s}
+.work:active{transform:scale(.97)}
+.work .em{font-size:22px}
+.work .tt{flex:1;font-size:15px;font-weight:600;min-width:0}
+.work .st{font-size:12.5px;color:#8aa;white-space:nowrap}
+.work.s1{border-color:var(--pri)}.work.s1 .st{color:var(--pri);font-weight:700}
+.work.s2{border-color:#ff7aa8;background:var(--pinkbg)}.work.s2 .st{color:var(--pink);font-weight:700}
+.pop{animation:pop .25s}
+@keyframes pop{50%{transform:scale(1.04)}}
+.tip{font-size:12px;color:var(--mute);text-align:center;margin:10px 0 0}
+.bar{position:sticky;bottom:10px;background:#fff;border:2px solid var(--pri);border-radius:20px;padding:10px 12px;display:flex;align-items:center;gap:10px;margin-top:14px;box-shadow:0 6px 18px rgba(11,111,164,.15)}
+.bar .sum{flex:1;font-weight:700;color:var(--deep);font-size:14px}
+.btn{border:0;background:var(--pri);color:#fff;border-radius:30px;padding:11px 20px;font-weight:700;cursor:pointer;font-size:15px}
+.btn:hover{background:#1b95cc}
+.btn.ghost{background:#fff;color:var(--deep);border:2px solid var(--pri);padding:8px 14px;font-size:13.5px}
+.btn.big{width:100%;padding:14px;font-size:17px}
+.msg{min-height:22px;font-size:13px;color:var(--deep);font-weight:600;margin:8px 0 0}
+.codebox{display:flex;gap:8px;margin-top:8px}
+.codebox input{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;min-width:0}
+.reg{text-align:center;font-size:13px;color:var(--mute);margin:8px 0}
+.reg b{color:var(--deep)}
+.rank{background:#fff;border:2px solid var(--line);border-radius:14px;margin-bottom:8px;overflow:hidden;animation:fade .3s}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}}
+.rank.top{border-color:var(--pri)}
+.rk{width:100%;display:flex;align-items:center;gap:10px;background:none;border:0;padding:11px 12px;cursor:pointer;text-align:left;position:relative}
+.rk .n{font-size:22px;font-weight:800;color:#7ab;width:26px;text-align:center}
+.top .rk .n{color:var(--pri)}
+.rk .t{flex:1;font-size:15px;font-weight:600;min-width:0}
+.rk .c{font-size:13px;white-space:nowrap}
+.rk .h{color:var(--pink);font-weight:800;font-size:13px;white-space:nowrap}
+.meter{height:5px;background:var(--line);margin:0 12px 10px;border-radius:3px}
+.meter i{display:block;height:100%;background:var(--pri);border-radius:3px}
+.who{padding:0 12px 12px;font-size:13px;color:var(--mute)}
+.who b{color:var(--pink)}
+.fav{background:#fff;border:2px solid var(--pink);border-radius:14px;padding:12px;font-size:14px;margin:14px 0 10px}
+.hint{background:#ffeaf2;border-radius:18px;padding:20px;text-align:center;animation:fade .4s}
+.hint .f{font-size:30px}
+.hint .q{font-size:18px;font-weight:800;color:#543;margin:8px 0 12px;line-height:1.6}
+.hint .lb{font-size:12px;color:#987;font-weight:700}
+.stats{display:flex;gap:8px;margin-bottom:12px}
+.stat{flex:1;background:#fff;border:2px solid var(--line);border-radius:14px;padding:8px;text-align:center;font-size:12px;color:var(--mute)}
+.stat b{display:block;font-size:22px;color:var(--deep)}
+.hero{background:var(--cy);border-radius:16px;padding:12px 14px;margin-bottom:14px;font-size:14px;color:#0e8aa0;font-weight:700;text-align:center}
+[hidden]{display:none!important}
+footer{text-align:center;font-size:12px;color:var(--mute);padding:10px}
+</style>
+</head>
+<body>
+<header><div class="hd">
+<div class="logo" aria-hidden="true">📺</div>
+<div class="brand"><b>Watch Match</b><span data-i18n="tagline"></span></div>
+<div class="lang" data-demo="lang-switch" role="group" aria-label="Language">
+<button type="button" data-l="ja" data-demo="lang-ja">日本語</button><button type="button" data-l="en" data-demo="lang-en">EN</button></div>
+</div></header>
+<main>
+<div class="tabs" role="tablist">
+<button class="tab" role="tab" id="tab-reg" data-tab="reg" data-demo="tab-register" data-i18n="tabReg"></button>
+<button class="tab" role="tab" id="tab-tally" data-tab="tally" data-demo="tab-tally" data-i18n="tabTally"></button>
+</div>
+
+<section id="sec-reg" role="tabpanel">
+<div class="hero" data-i18n="hero"></div>
+<h2 data-i18n="regTitle"></h2>
+<p class="lead" data-i18n="regLead"></p>
+<div class="card">
+<label for="name" data-i18n="nameLabel"></label>
+<input type="text" id="name" maxlength="14" data-i18n-ph="namePh" data-demo="name-input" autocomplete="off">
+<div class="chips" role="group">
+<button class="chip" data-f="all" data-demo="filter-all" data-i18n="fAll"></button>
+<button class="chip" data-f="a" data-demo="filter-anime" data-i18n="fAnime"></button>
+<button class="chip" data-f="d" data-demo="filter-drama" data-i18n="fDrama"></button>
+</div>
+<input type="search" id="q" data-i18n-ph="searchPh" data-i18n-aria="searchPh" data-demo="search-input" autocomplete="off">
+</div>
+<div class="grid" id="works" data-demo="work-list"></div>
+<p class="tip" data-i18n="tapHelp"></p>
+<div class="bar">
+<div class="sum" id="sum" data-demo="my-summary" aria-live="polite"></div>
+<button class="btn" id="make" data-demo="make-code" data-i18n="makeCode"></button>
+</div>
+<div class="card" id="codeCard" hidden style="margin-top:14px">
+<label for="codeOut" data-i18n="myCode"></label>
+<div class="codebox"><input type="text" id="codeOut" readonly data-demo="code-output"><button class="btn ghost" id="copy" data-demo="copy-code" data-i18n="copy"></button></div>
+<p class="lead" style="margin:8px 0 0" data-i18n="codeHelp"></p>
+</div>
+<p class="msg" id="regMsg" role="status"></p>
+</section>
+
+<section id="sec-tally" role="tabpanel" hidden>
+<h2 data-i18n="tallyTitle"></h2>
+<p class="lead" data-i18n="tallyLead"></p>
+<label for="paste" data-i18n="pasteLabel"></label>
+<textarea id="paste" data-i18n-ph="pastePh" data-demo="paste-codes" spellcheck="false"></textarea>
+<div class="reg" id="regCount" data-demo="registered-count"></div>
+<button class="btn big" id="tally" data-demo="tally-button" data-i18n="tallyBtn"></button>
+<div class="row" style="margin-top:10px;justify-content:center">
+<button class="btn ghost" id="sample" data-demo="load-sample" data-i18n="sample"></button>
+<button class="btn ghost" id="addMine" data-demo="add-mine" data-i18n="addMine"></button>
+<button class="btn ghost" id="clear" data-demo="clear-codes" data-i18n="clear"></button>
+</div>
+<p class="msg" id="tMsg" role="status"></p>
+<div id="result" data-demo="result-area" hidden></div>
+</section>
+</main>
+<footer data-i18n="footer"></footer>
+
+<script>
+const I18N={
+ja:{title:"Watch Match",tagline:"見たこと、そろった！",tabReg:"① 事前登録",tabTally:"② 当日の集計",
+hero:"📺 見た作品でマッチして、会話をはじめよう",
+regTitle:"見た作品をタップ",regLead:"30秒で終わります。登録したら「マイコード」を作って、当日主催者に送ってください。",
+nameLabel:"ニックネーム",namePh:"例：ひなた",searchPh:"作品を検索",fAll:"すべて",fAnime:"アニメ",fDrama:"ドラマ",
+s0:"未選択",s1:"✓ 見た",s2:"♥ 特に好き",tapHelp:"タップ1回＝見た／2回＝特に好き／3回＝解除",
+sum:"見た {a}・♥ {b}",makeCode:"マイコードを作る",myCode:"あなたのマイコード",copy:"コピー",copied:"コピーしました！主催者に送ってね 📨",
+copyFail:"コピーできませんでした。コードを長押しして選んでください。",need:"まず1つ以上の作品をタップしてね",
+codeHelp:"このコードに、あなたの名前と見た作品が入っています。",codeMade:"コードを作りました ✨",
+tallyTitle:"当日の集計",tallyLead:"主催者が全員分のコードを貼り付けるだけ。すぐにランキングが出ます。",
+pasteLabel:"みんなのコード（1行に1人分）",pastePh:"WM-... を全員分貼り付け",
+reg:"登録済み {n}人分 ✓",regNone:"まだコードがありません",invalid:"（読み取れない文字列 {n}件）",
+tallyBtn:"集計する！",sample:"サンプルを入れる",addMine:"自分のコードを追加",clear:"クリア",
+sampleDone:"12人分のサンプルを入れました。「集計する！」を押してね",noMine:"先に「事前登録」でマイコードを作ってください",
+mineAdded:"自分のコードを追加しました",cleared:"クリアしました",noCodes:"有効なコードが見つかりません。",
+tallied:"{n}人分を集計しました 🎉",
+people:"参加者",works:"作品数",bestSeen:"最多の「見た」",rankTitle:"🏆 みんなが見た作品",
+seen:"{n}人が見た",more:"もっと見る",less:"閉じる",loversLabel:"♥ 特に好き：",seenLabel:"見た：",none:"なし",
+favTop:"♥いちばん人気",hintTitle:"💬 話してみよう",nextHint:"別の質問を見る 🔄",
+anime:"アニメ",drama:"ドラマ",footer:"Watch Match ・ 新入生・新入社員のアイスブレイクに",
+sg:"さん",
+hints:["いちばん好きなシーンはどこ？","一番好きなキャラは誰？","どこでハマった？きっかけは？","まだ見てない人に、一言でおすすめするなら？","この作品の世界に入れるなら、誰になりたい？","主題歌や音楽で好きな曲はある？","続きの展開、どうなると思う？","何回くらい見返した？"],
+guest:"ゲスト"},
+en:{title:"Watch Match",tagline:"Our watch lists, matched!",tabReg:"① Sign up",tabTally:"② Day-of tally",
+hero:"📺 Match on shows you watched and start talking",
+regTitle:"Tap what you've watched",regLead:"Takes 30 seconds. Make your code, then send it to the host before the event.",
+nameLabel:"Nickname",namePh:"e.g. Hinata",searchPh:"Search titles",fAll:"All",fAnime:"Anime",fDrama:"Drama",
+s0:"Not yet",s1:"✓ Watched",s2:"♥ Favorite",tapHelp:"Tap once = watched / twice = favorite / three times = clear",
+sum:"Watched {a}・♥ {b}",makeCode:"Make my code",myCode:"Your code",copy:"Copy",copied:"Copied! Send it to the host 📨",
+copyFail:"Couldn't copy. Please select the code and copy it.",need:"Tap at least one title first",
+codeHelp:"This code holds your name and the shows you picked.",codeMade:"Your code is ready ✨",
+tallyTitle:"Day-of tally",tallyLead:"The host just pastes everyone's codes. The ranking shows up right away.",
+pasteLabel:"Everyone's codes (one per line)",pastePh:"Paste all the WM-... codes here",
+reg:"{n} people registered ✓",regNone:"No codes yet",invalid:"({n} unreadable)",
+tallyBtn:"Tally!",sample:"Load sample",addMine:"Add my code",clear:"Clear",
+sampleDone:"Loaded 12 sample people. Press \"Tally!\"",noMine:"Make your code in \"Sign up\" first",
+mineAdded:"Added your code",cleared:"Cleared",noCodes:"No valid codes found.",
+tallied:"Tallied {n} people 🎉",
+people:"People",works:"Titles",bestSeen:"Most watched",rankTitle:"🏆 Most watched by everyone",
+seen:"{n} watched",more:"Show more",less:"Show less",loversLabel:"♥ Favorite: ",seenLabel:"Watched: ",none:"nobody",
+favTop:"♥ Most loved",hintTitle:"💬 Let's talk",nextHint:"Another question 🔄",
+anime:"Anime",drama:"Drama",footer:"Watch Match ・ An icebreaker for new students and new hires",
+sg:"",
+hints:["What's your favorite scene?","Who's your favorite character?","When did you get hooked?","How would you recommend it in one sentence?","If you could live in this world, who would you be?","Do you have a favorite song from it?","What do you think happens next?","How many times have you rewatched it?"],
+guest:"Guest"}};
+// emoji, kind, ja, en, popularity
+const W=[
+["🗡️","a","鬼滅の刃","Demon Slayer",.8],["🕵️","a","SPY×FAMILY","SPY×FAMILY",.75],["🪬","a","呪術廻戦","Jujutsu Kaisen",.6],["🏴‍☠️","a","ONE PIECE","ONE PIECE",.7],
+["🧱","a","進撃の巨人","Attack on Titan",.6],["🏐","a","ハイキュー!!","Haikyu!!",.5],["🔍","a","名探偵コナン","Detective Conan",.7],["🪄","a","葬送のフリーレン","Frieren",.45],
+["⭐","a","【推しの子】","Oshi no Ko",.4],["🐉","a","ドラゴンボール","Dragon Ball",.6],["🍥","a","NARUTO","NARUTO",.65],["🦸","a","僕のヒーローアカデミア","My Hero Academia",.5],
+["🏀","a","SLAM DUNK","SLAM DUNK",.4],["⚽","a","ブルーロック","Blue Lock",.3],["🪚","a","チェンソーマン","Chainsaw Man",.35],["🌸","a","薬屋のひとりごと","The Apothecary Diaries",.3],
+["💞","d","愛の不時着","Crash Landing on You",.5],["🥊","d","梨泰院クラス","Itaewon Class",.3],["🦑","d","イカゲーム","Squid Game",.55],["🖤","d","ウェンズデー","Wednesday",.4],
+["🔦","d","ストレンジャー・シングス","Stranger Things",.35],["🏦","d","半沢直樹","Hanzawa Naoki",.4],["💃","d","逃げるは恥だが役に立つ","The Full-Time Wife Escapist",.45],["🌏","d","VIVANT","VIVANT",.4],
+["⚖️","d","ウ・ヨンウ弁護士は天才肌","Extraordinary Attorney Woo",.35],["🏫","d","ごくせん","Gokusen",.3],["🌹","d","花より男子","Boys Over Flowers",.3],["👩‍⚕️","d","ドクターX","Doctor-X",.3],
+["🧑‍🤝‍🧑","d","Friends","Friends",.25],["🚑","d","コード・ブルー","Code Blue",.25]];
+const N=W.length, AL="0123456789ABCDEFGHIJKLMNOPQ";
+const SN={ja:["ひなた","そうた","みお","けんと","さくら","はると","りな","ゆうき","あおい","だいき","ななみ","れん"],en:["Hinata","Sota","Mio","Kento","Sakura","Haruto","Rina","Yuki","Aoi","Daiki","Nanami","Ren"]};
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+let LANG="en",filter="all",query="",showAll=false,hintIdx=0,result=null,myCode="",expanded=null;
+let me={name:"",s:new Array(N).fill(0)};
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const t=(k,v)=>{let s=(I18N[LANG][k]!==undefined?I18N[LANG][k]:k);if(v)for(const x in v)s=s.replace("{"+x+"}",v[x]);return s};
+const wt=i=>LANG==="ja"?W[i][2]:W[i][3];
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v)}catch(e){return null}}
+// codes
+function enc(name,s){let o="";for(let i=0;i<N;i+=3)o+=AL[(s[i]||0)*9+(s[i+1]||0)*3+(s[i+2]||0)];
+ let b="";try{b=btoa(unescape(encodeURIComponent(name))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"")}catch(e){}
+ return "WM-"+b+"."+o}
+function dec(name64,body){let name="";try{let b=name64.replace(/-/g,"+").replace(/_/g,"/");while(b.length%4)b+="=";name=decodeURIComponent(escape(atob(b)))}catch(e){}
+ const s=[];for(const ch of body){const v=AL.indexOf(ch);s.push(Math.floor(v/9),Math.floor(v/3)%3,v%3)}
+ return{name:name.trim(),s:s.slice(0,N)}}
+function parse(text){const list=[],seen=new Set();let bad=0;
+ for(const tok of text.split(/[\s,、;]+/).filter(Boolean)){const m=/^WM-([A-Za-z0-9_-]*)\.([0-9A-Q]+)$/.exec(tok);
+  if(!m){bad++;continue}if(seen.has(tok))continue;seen.add(tok);const p=dec(m[1],m[2]);if(!p.name)p.name="#"+(list.length+1);list.push(p)}
+ return{list,bad}}
+// i18n
+function applyI18n(){document.documentElement.lang=LANG;document.title=t("title");
+ $$("[data-i18n]").forEach(e=>e.textContent=t(e.dataset.i18n));
+ $$("[data-i18n-ph]").forEach(e=>e.placeholder=t(e.dataset.i18nPh));
+ $$("[data-i18n-aria]").forEach(e=>e.setAttribute("aria-label",t(e.dataset.i18nAria)));
+ $$(".lang button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.l===LANG));
+ $(".lang").setAttribute("aria-label",LANG==="ja"?"言語":"Language")}
+function setLang(l){LANG=l;store("lang",l);applyI18n();renderWorks();renderSum();updateReg();if(result)renderResult()}
+// register
+function renderWorks(){const box=$("#works");const q=query.trim().toLowerCase();box.innerHTML="";
+ W.forEach((w,i)=>{if(filter!=="all"&&w[1]!==filter)return;if(q&&!(w[2]+" "+w[3]).toLowerCase().includes(q))return;
+  const b=document.createElement("button");b.className="work";b.dataset.i=i;b.dataset.demo="work-"+i;
+  b.innerHTML='<span class="em" aria-hidden="true">'+w[0]+'</span><span class="tt">'+esc(wt(i))+'</span><span class="st"></span>';
+  b.onclick=()=>{me.s[i]=(me.s[i]+1)%3;paint(b);b.classList.remove("pop");void b.offsetWidth;b.classList.add("pop");saveMe();renderSum()};
+  paint(b);box.appendChild(b)})}
+function paint(b){const i=+b.dataset.i,s=me.s[i];b.className="work s"+s;b.querySelector(".st").textContent=t("s"+s);
+ b.setAttribute("aria-label",wt(i)+" — "+t("s"+s).replace(/[✓♥]/g,""))}
+function renderSum(){const a=me.s.filter(x=>x>0).length,b=me.s.filter(x=>x==2).length;$("#sum").textContent=t("sum",{a,b})}
+function saveMe(){store("wm_me",JSON.stringify({name:me.name,s:me.s}))}
+function msg(id,k,v){$(id).textContent=k?t(k,v):""}
+function makeCode(){if(!me.s.some(x=>x>0)){msg("#regMsg","need");return false}
+ myCode=enc(me.name||t("guest"),me.s);$("#codeOut").value=myCode;$("#codeCard").hidden=false;msg("#regMsg","codeMade");return true}
+async function copyCode(){const inp=$("#codeOut");let ok=false;
+ try{await navigator.clipboard.writeText(inp.value);ok=true}catch(e){try{inp.select();ok=document.execCommand("copy")}catch(e2){}}
+ msg("#regMsg",ok?"copied":"copyFail")}
+// tally
+function updateReg(){const p=parse($("#paste").value);$("#regCount").innerHTML=p.list.length?esc(t("reg",{n:p.list.length}))+(p.bad?' <span>'+esc(t("invalid",{n:p.bad}))+'</span>':""):esc(t("regNone"))}
+function sampleCodes(){let seed=20240401;const r=()=>{seed|=0;seed=seed+0x6D2B79F5|0;let x=Math.imul(seed^seed>>>15,1|seed);x=x+Math.imul(x^x>>>7,61|x)^x;return((x^x>>>14)>>>0)/4294967296};
+ return SN[LANG].map(n=>{const s=W.map(w=>{if(r()<w[4]){return r()<.35?2:1}return 0});return enc(n,s)}).join("\n")}
+function doTally(){const p=parse($("#paste").value);updateReg();
+ if(!p.list.length){result=null;$("#result").hidden=true;msg("#tMsg","noCodes");return}
+ const seen=new Array(N).fill(0),love=new Array(N).fill(0),sw=W.map(()=>[]),lw=W.map(()=>[]);
+ p.list.forEach(u=>u.s.forEach((v,i)=>{if(v>0){seen[i]++;sw[i].push(u.name)}if(v==2){love[i]++;lw[i].push(u.name)}}));
+ const order=W.map((_,i)=>i).filter(i=>seen[i]>0).sort((a,b)=>seen[b]-seen[a]||love[b]-love[a]||a-b);
+ const fav=order.slice().sort((a,b)=>love[b]-love[a]||seen[b]-seen[a]||a-b)[0];
+ result={n:p.list.length,seen,love,sw,lw,order,fav};showAll=false;expanded=null;hintIdx=Math.floor(Math.random()*8);
+ msg("#tMsg","tallied",{n:p.list.length});renderResult()}
+function renderResult(){const R=result,box=$("#result");box.hidden=false;
+ const max=R.seen[R.order[0]]||1,list=showAll?R.order:R.order.slice(0,8);
+ const sfx=t("sg");const nm=a=>a.length?a.map(x=>esc(x)+sfx).join(LANG==="ja"?"、":", "):esc(t("none"));
+ let h='<div class="stats"><div class="stat"><b>'+R.n+'</b>'+esc(t("people"))+'</div><div class="stat"><b>'+R.order.length+'</b>'+esc(t("works"))+'</div><div class="stat"><b>'+max+'</b>'+esc(t("bestSeen"))+'</div></div>';
+ h+='<h2>'+esc(t("rankTitle"))+'</h2><div data-demo="ranking-list">';
+ list.forEach((i,k)=>{h+='<div class="rank'+(k==0?" top":"")+'"><button class="rk" data-r="'+i+'" data-demo="rank-'+(k+1)+'" aria-expanded="'+(expanded===i)+'"><span class="n">'+(k+1)+'</span><span class="t">'+W[i][0]+" "+esc(wt(i))+'</span><span class="c">'+esc(t("seen",{n:R.seen[i]}))+'</span><span class="h">♥'+R.love[i]+'</span></button><div class="meter"><i style="width:'+Math.round(R.seen[i]/max*100)+'%"></i></div>'+
+  (expanded===i?'<div class="who"><div><b>'+esc(t("loversLabel"))+'</b>'+nm(R.lw[i])+'</div><div>'+esc(t("seenLabel"))+nm(R.sw[i])+'</div></div>':"")+'</div>'});
+ h+='</div>';
+ if(R.order.length>8)h+='<div style="text-align:center;margin-bottom:6px"><button class="btn ghost" id="moreBtn" data-demo="show-more">'+esc(t(showAll?"less":"more"))+'</button></div>';
+ const f=R.fav;
+ h+='<div class="fav" data-demo="fav-top">'+esc(t("favTop"))+' <b>'+W[f][0]+" "+esc(wt(f))+'</b> ♥'+R.love[f]+'<div style="font-size:12.5px;color:var(--mute);margin-top:2px">'+nm(R.lw[f])+'</div></div>';
+ h+='<div class="hint" data-demo="hint-card"><div class="f">🔥</div><div class="lb">'+esc(t("hintTitle"))+'</div><div class="q">'+esc(I18N[LANG].hints[hintIdx%8])+'</div><button class="btn ghost" id="nextHint" data-demo="next-hint">'+esc(t("nextHint"))+'</button></div>';
+ box.innerHTML=h;
+ box.querySelectorAll(".rk").forEach(b=>b.onclick=()=>{const i=+b.dataset.r;expanded=expanded===i?null:i;renderResult();const nb=box.querySelector('[data-r="'+i+'"]');if(nb)nb.focus()});
+ const mb=$("#moreBtn");if(mb)mb.onclick=()=>{showAll=!showAll;renderResult()};
+ $("#nextHint").onclick=()=>{hintIdx++;renderResult();$("#nextHint").focus()}}
+// tabs
+function showTab(k){["reg","tally"].forEach(x=>{$("#sec-"+x).hidden=x!==k;$("#tab-"+x).setAttribute("aria-selected",x===k)});window.scrollTo({top:0})}
+// init
+function init(){let l=null;
+ if(window.APP_LANG==="ja"||window.APP_LANG==="en")l=window.APP_LANG;
+ if(!l){try{const q=new URLSearchParams(location.search).get("lang");if(q==="ja"||q==="en")l=q}catch(e){}}
+ if(!l){const s=store("lang");if(s==="ja"||s==="en")l=s}
+ LANG=l||"en";
+ try{const m=JSON.parse(store("wm_me")||"null");if(m&&Array.isArray(m.s)){me.name=String(m.name||"");me.s=W.map((_,i)=>[0,1,2].includes(m.s[i])?m.s[i]:0)}}catch(e){}
+ $("#name").value=me.name;
+ $("#name").oninput=e=>{me.name=e.target.value;saveMe()};
+ $("#q").oninput=e=>{query=e.target.value;renderWorks()};
+ $$(".chip").forEach(c=>c.onclick=()=>{filter=c.dataset.f;$$(".chip").forEach(x=>x.setAttribute("aria-pressed",x===c));renderWorks()});
+ $$(".chip")[0].setAttribute("aria-pressed","true");
+ $$(".lang button").forEach(b=>b.onclick=()=>setLang(b.dataset.l));
+ $$(".tab").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+ $("#make").onclick=makeCode;$("#copy").onclick=copyCode;
+ $("#paste").oninput=updateReg;
+ $("#tally").onclick=doTally;
+ $("#sample").onclick=()=>{$("#paste").value=sampleCodes();updateReg();msg("#tMsg","sampleDone")};
+ $("#addMine").onclick=()=>{if(!me.s.some(x=>x>0)){msg("#tMsg","noMine");return}
+  const c=enc(me.name||t("guest"),me.s);const ta=$("#paste");if(!ta.value.includes(c))ta.value=(ta.value.trim()?ta.value.trim()+"\n":"")+c;updateReg();msg("#tMsg","mineAdded")};
+ $("#clear").onclick=()=>{$("#paste").value="";result=null;$("#result").hidden=true;updateReg();msg("#tMsg","cleared")};
+ showTab("reg");setLang(LANG)}
+init();
+</script>
+</body>
+</html>
